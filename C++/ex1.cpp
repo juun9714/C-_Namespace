@@ -2,17 +2,19 @@
 using namespace std;
 
 int main() {
-	string name;
-	int score(0);
+	int arr[2][3] = { {1,2,3},{4,5,6} };
 
-	cout << "이름 입력 : ";
-	cin >> name;
-	cout << "점수 입력 : ";
-	cin >> score;
-	cout << name << "님의 점수는 " << score << "점 입니다." << endl;
+	for (int x : arr[0])
+		cout << x << ' ';
+	cout << endl;
+	for (int y : arr[1])
+		cout << y << ' ';
+	cout << endl;
 
-
-
-
+	///////////////////////
+	
+	for (int(&row)[3] : arr)
+		for (int(&col) : row)
+			cout << col << ' ';
 	return 0;
 }
