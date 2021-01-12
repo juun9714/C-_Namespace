@@ -1,20 +1,40 @@
 #include <iostream>
 using namespace std;
 
+int n;
+void set();
+
+namespace doodle {
+	int n;
+	void set();
+}
+
+namespace google {
+	int n;
+	void set();
+}
+
 int main() {
-	int arr[2][3] = { {1,2,3},{4,5,6} };
 
-	for (int x : arr[0])
-		cout << x << ' ';
-	cout << endl;
-	for (int y : arr[1])
-		cout << y << ' ';
-	cout << endl;
+	::set();
+	doodle::set();
+	google::set();
 
-	///////////////////////
+	cout << ::n << endl;
+	cout << doodle::n << endl;
+	cout << google::n << endl;
 	
-	for (int(&row)[3] : arr)
-		for (int(&col) : row)
-			cout << col << ' ';
 	return 0;
+}
+
+void doodle::set() {
+	n = 20;
+}
+
+void set() {
+	n = 10;
+}
+
+void google::set() {
+	n = 30;
 }
