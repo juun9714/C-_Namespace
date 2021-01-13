@@ -1,44 +1,55 @@
 #include <iostream>
+using namespace std;
 
-int n;
-void set() {
-	n = 10;
-}
+//TV를 만들어보자
 
-namespace doodle {
-	
-	void set();
+struct TV {
+private:
+	bool powerOn;
+	int channel;
+	int volume;
 
-	namespace google {
-		void set();
-		int n;
-		//이렇게 google의 n이 google의 set보다 뒤에 선언되어 있으면 참조를 자기꺼를 안하고, 
-		//자기 밖에 있는 것을 참조하게 된다.
+public:
+	void setVolume(int vol) {
+		if (vol >= 0 && vol <= 100) {
+			volume = vol;
+			cout << "Volume은 " << vol << "입니다." << endl;
+		}
+		
+		/*
+		volume이 0~100 이외의 값이 저장되는 것을 방지 
+		근데 어떤 프로그래머가 또 lg.volume=11350 이라고 프로그램을 짜면 안돼. 
+		해당 struct안에서만(main함수에서는 접근 불가) volume변수에 접근할 수 있도록 하는 방법이 없을까? 
+		접근제어 지시자가 등장 (private, protected, public)
+		*/
 	}
-	int n;
-}
+
+	void on() {
+		powerOn = true;
+		cout << "TV를 켰습니다." << endl;
+	}
+
+	void off() {
+		powerOn = false;
+		cout << "TV를 껐습니다." << endl;
+	}
+
+	void setChannel(int cnl) {
+		if (cnl >= 1 && cnl <= 100) {
+			channel = cnl;
+			cout << "Channel은 " << cnl << "입니다." << endl;
+		}
+	}
+};
+
 
 
 int main() {
-	using namespace std;
-
-	using namespace doodle;
-	::set();
-	doodle::set();
-	google::set();
-
-	cout << ::n << endl;
-	cout << doodle::n << endl;
-	cout << doodle::google::n << endl;
 	
+	TV lg;
+	lg.on();
+	lg.setChannel(10);
+	lg.setChannel(-73);
+	lg.setVolume(50);
 	return 0;
 }
-
-void doodle::google::set() {
-	n = 30;
-}
-
-void doodle::set() {
-	n = 20;
-}
-
