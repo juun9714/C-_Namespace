@@ -1,50 +1,52 @@
-#include <iostream>
-
-using namespace std;
-
-int idCounter = 1;
-//전역의 역할을 해야하지만 class Color와 밀접한 관련이 있는 변수 -> 정적 멤버 !
-
-class Color {
-public:
-	Color() :r(0), g(0), b(0),id(idCounter++){}
-	Color(float r, float g, float b):r(r), g(g), b(b), id(idCounter++) {}
-
-	float getR() { return r; }
-	float getG() { return g; }
-	float getB() { return b; }
-	int getId() { return id; }
-
-	static Color MixColors(Color a, Color b) {
-		return Color((a.r + b.r) / 2, (a.g + b.g) / 2, (a.b + b.b) / 2);
-		//이 MixColors라는 멤버 메서드는 아무리 객체를 찍어내도 하나밖에 없는 것이다. 
-	}
-
-	static int idCounter;
-	//객체랑은 무관하다. 생성자 안에서 초기값을 설정할 수 없음
-private:
-	float r;
-	float g;
-	float b;
-
-	int id;
-};
-
-int Color::idCounter = 1; //선언과 정의를 분리해서 해줘야 한다. 
-
 /*
-장점 
-1. 큰 프로그램의 경우 각 클래스마다 counter역할을 하는 전역변수가 엄청 많을 것이다. 그 전역변수들이 겹칠 수 있음 -> 특정 클래스와 관련된 전역변수 역할을 하는 변수 : 정적멤버변수, 함수를 활용  
+<const의 쓰임새>
+- 실수를 방지하기 위해 사용하는 기능
+1. 매개변수의 상수화 (for 모든 함수)
+2. 메서드의 상수화 (for 멤버 메서드)
 */
 
-int main() {
-	Color red(1, 0, 0);
-	Color blue(0, 0, 1);
-	Color purple = Color::MixColors(blue, red);
+#include <iostream>
+using namespace std;
 
-	cout << "r=" << purple.getR() << ", g=" << purple.getG() << ", b=" << purple.getB() << endl;
-	cout << "red.getId() = " << red.getId() << endl;
-	cout << "blue.getId() = " << blue.getId() << endl;
-	cout << "purple.getId() = " << purple.getId() << endl;
+class Account {
+public:
+	Account():money(0){}
+	Account(int money):money(money){}
+
+	void Deposit(const int d) {
+		//이 함수 안에서 매개변수인 d의 값이 변하는 경우(실수)를 방지 -> 매개변수의 상수화 기능
+		//d = money;
+		money += d;
+		//예금
+		cout << d << "원을 예금했다." << endl;
+	}
+
+	void Draw(const int d) {
+		if (money >= d) {
+			money -= d;
+			cout << d << "원을 인출했다." << endl;
+		}
+	}
+
+	int viewMoney() const{
+		//이 메서드의 경우 멤버변수를 단순히 반환하는 역할이고, 멤버 변수를 조작하지는 않는다. -> const 메서드로 만들어버리면 멤버변수(money) 조작시 에러가 뜬다. 
+		//money++;
+		return money;
+	}
+
+	//const int viewMoney() :viewMoney라는 함수의 리턴값이 const가 된다. 사실 return 값을 조작하는 일은 거의 없기 때문에 의미가 없긴 함.
+
+private:
+	int money;
+};
+
+
+
+int main() {
+	Account june(200);
+	june.Deposit(100);
+	june.Draw(20);
+	cout << june.viewMoney() <<"원이 잔액이다."<< endl;
 	return 0;
+
 }
