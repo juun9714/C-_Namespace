@@ -1,96 +1,61 @@
+/*
+static : 정적 <-> 동적
+
+<동적 멤버>
+객체에 포함이 되어 있다(?
+클래스로 찍어낸 각 객체(붕어빵)마다 팥, 슈크림이 다른 것임 (각 멤버의 값이 달라)
+
+<정적 멤버>
+붕어빵에 해당되는 멤버가 아니라, 붕어빵 틀에 해당되는 멤버들 
+*/
+
 #include <iostream>
+
 using namespace std;
 
-class Time {
-public:
-	//생성자 위임 : 이미 구현되어있는 부분은 만들어 놓은 것을 활용 -> 유지보수에도 좋다. 
-	Time() : h(0),m(0),s(0) {}
-	Time(int s_) : Time(){
-		s = s_;
-	}
-	Time(int m_,int s_) : Time(s_){
-		m = m_;
-	}
-	Time(int h_,int m_, int s_) : Time(m_,s_){
-		h = h_;
-	}
-	int h;
-	int m;
-	int s;
-};
-
 /*
-생성자 : 객체가 생성될 때 자동으로 호출되는 함수 
--> 멤버변수를 초기화하기에 좋다. 
-소멸자 : 객체가 소멸될 때 자동으로 호출되는 함수
--> 메모리 해제시 잘 쓰인다. 
+RGB
+0~1 사이의 값을 갖는 float
+*/
 
-복소수 (real, imag이라는 두 파트로 나뉘어져 있다.)
-
-
-class Complex {
+class Color {
 public:
-	Complex() : real(0), imag(0){}
-	Complex(double real_, double imag_) : real(real_),imag(imag_){}
-	//초기화 목록으로 사용할 때는 매개변수와 멤버변수가 이름이 같아도 프로그램 스스로 구분한다.
-	//기존처럼 함수와 동일한 형태로 사용할 때에는 매개변수와 멤버변수가 이름이 같으면 모두 매개로 인식했다.
+	Color() :r(0), g(0), b(0){}
+	Color(float r, float g, float b):r(r), g(g), b(b) {}
 
-	double GetReal() {
-		return real;
+	float getR() { return r; }
+	float getG() { return g; }
+	float getB() { return b; }
+
+	static Color MixColors(Color a, Color b) {
+		/*
+		생성자를 바로 호출
+		Color result((a.getR()+b.getR())/2, (a.getG() + b.getG()) / 2, (a.getB() + b.getB()) / 2);
+		return result;
+		*/
+
+		return Color((a.getR() + b.getR()) / 2, (a.getG() + b.getG()) / 2, (a.getB() + b.getB()) / 2);
+		//위의 주석과 동일 
 	}
-	void SetReal(double real_) {
-		real = real_;
-	}
-	double GetImag() {
-		return imag;
-	}
-	void SetImag(double imag_) {
-		real = imag_;
-	}
+	//MixColors라는 함수를 class안에 넣고 싶은데, static 없이 넣으면 main에서 MixColors를 호출할 때, 소속을 밝혀줘야하는데 어느 소속인지 애매해진다. 
+	//이럴때 static을 붙여주면 main에서 호출할 때, namespace처럼 Color::MixColors로 쓸 수 있다. 
+	//또한 class 안에 멤버함수로 넣으면 class의 private 멤버에 직접 접근할 수 있다. -> getR,G,B를 안써도 됨
+
 
 private:
-	double real;
-	double imag;
+	float r;
+	float g;
+	float b;
 };
 
 
-class MyClass {
-public:
-	MyClass() {
-		//반환형이 없음 -> 생성자
-		cout << "생성자가 호출되었다." << endl;
-	}
 
-	~MyClass() {
-		//소멸자
-		cout << "소멸자가 호출되었다." << endl;
-	}
-
-	//생성자와 소멸자를 선언해주지 않으면 default 생성자와 소멸자가 만들어진다.
-	//내부에 아무것도 없다.
-};
-
-*/
 int main() {
-	/*
-	Complex c1;//이렇게 선언하면 매개변수가 없는 생성자가 호출된다.
-	Complex c2 = Complex(2.0,3.0);
-	Complex c3(2.0, 3.0);
+	Color blue(0, 0, 1);
+	Color red(1, 0, 0);
 	
-	cout <<"c1 "<< c1.GetReal() <<' '<< c1.GetImag() << endl;
-	cout <<"c2 "<< c2.GetReal() << ' ' << c2.GetImag() << endl;
-	cout <<"c3 "<< c3.GetReal() << ' ' << c3.GetImag() << endl;
-	*/
+	Color purple = Color::MixColors(blue, red);
 
-	Time t1;
-	Time t2(5);
-	Time t3(3, 16);
-	Time t4(2, 42, 15);
-
-	cout << "t1 : " << t1.h << ":" << t1.m << ":" << t1.s << " " << endl;
-	cout << "t2 : " << t2.h << ":" << t2.m << ":" << t2.s << " " << endl;
-	cout << "t3 : " << t3.h << ":" << t3.m << ":" << t3.s << " " << endl;
-	cout << "t4 : " << t4.h << ":" << t4.m << ":" << t4.s << " " << endl;
+	cout << "r=" << purple.getR() << ", g=" << purple.getG() << ", b=" << purple.getB() << endl;
 	return 0;
 }
-
