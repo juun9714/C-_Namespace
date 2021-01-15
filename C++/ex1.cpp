@@ -1,48 +1,27 @@
 #include <iostream>
 using namespace std;
 
-class GameWindow {
-public:
-	GameWindow();
-	GameWindow(const int, const int);
-	//생성자 자체에는 const 안된다.
-
-	int GetWidth() const;
-	int GetHeight() const;
-	void ResizeWindow(const int w, const int h);
-	//ResizeWindow는 const안된다. 멤버변수를 조작하기 때문
-
-private:
-	int width;
-	int height;
-};
-
-GameWindow::GameWindow() :width(800), height(600) {}
-GameWindow::GameWindow(const int w, const int h) {
-	ResizeWindow(w, h);
-	//ResizeWindow의 코드를 재사용 -> 유지보수가 쉽다.
-}
-int GameWindow::GetWidth() const {return width;}
-int GameWindow::GetHeight() const  {return height;}
-void GameWindow::ResizeWindow (const int w, const int h) {
-	if (w < 800)
-		width = 800;
-	else
-		width = w;
-
-	if (h < 600)
-		height = 600;
-	else
-		height = h;
-}
+/*
+동적 할당
+-> 메모리를 유동적으로 할당한다.
+-> 범위의 생성과 소멸과 무관하게 생성시점과 소멸시점을 프로그래머가 정할 수 있는 것
+정적 할당
+int a;
+-> 해당 범위가 시작될때 생성되고, 종료되면 자동으로 소멸된다.
+*/
 
 
 int main() {
-	GameWindow mainWindow(1,1);
-	cout << mainWindow.GetWidth() << "x" << mainWindow.GetHeight() << endl;
-	mainWindow.ResizeWindow(1366, 768);
-	cout << mainWindow.GetWidth() << "x" << mainWindow.GetHeight() << endl;
-	mainWindow.ResizeWindow(1, 1);
-	cout << mainWindow.GetWidth() << "x" << mainWindow.GetHeight() << endl;
+	int *a=new int(5);
+	//new : 연산자 : 생성한 메모리의 주소값을 반환한다. 
+	//그렇기 때문에 반환된 주소값을 저장하기 위한 포인터 변수에 반환값을 저장해야한다.
+	cout << a << endl;
+	cout << *a << endl;
+
+	*a = 10;
+	cout << a << endl;
+	cout << *a << endl;
+
+	delete a;
 	return 0;
 }
