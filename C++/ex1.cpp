@@ -4,34 +4,41 @@ using namespace std;
 
 class Base {
 public:
-	void bFunction() {
-		cout << "Hello !" << endl;
-	}
-	
-	int bnum;
+	int bPublic;
+
+protected:
+	int bProtected;
+	//protected는 부모가 자식한테 물려줄 멤버를 지정하는 것이기 때문에 부모에서만 설정해주면 된다.
+private:
+	int bPrivate;
 };
-
-class Derived : public Base {
+/*
+상속시 쓰는 접근제어의 의미
+-> 지정한 지시자보다 더 넓은 공개범위를 갖고 있는 멤버를 지정된 지시자 수준으로 내린다. 
+*/
+class Derived : protected Base {
 public:
-	void dFunction() {
-		cout << "Hello ?" << endl;
-	}
+	int dPublic;
+	void DFunc() {
+		bPublic = 1;
+		bProtected = 2;
+		//bPrivate = 3;
+		dPublic = 4;
+		dPrivate = 5;
 
-	int dnum;
+	}
+private:
+	int dPrivate;
 };
 
 int main() {
 	Base b;
 	Derived d;
-	/*
-	b.bFunction();
-	b.bnum = 1;
+	
+	b.bPublic = 1;
 
-	d.bFunction();
-	d.bnum = 2;
-	d.dFunction();
-	d.dnum = 1;
-	*/
+	d.bPublic = 3;
+	d.dPublic = 2;
 	return 0;
 }
 
@@ -50,6 +57,8 @@ int main() {
 왜 ? 
 -> 남자와 총각의 관계를 생각해보면 쉽다. 
 
+
+부모클래스에서 public으로 정의되어 있는 멤버는 자식 클래스에서도 public으로 인식
 */
 
 /*
