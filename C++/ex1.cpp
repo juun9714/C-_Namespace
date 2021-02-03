@@ -1,51 +1,72 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
+
 using namespace std;
+namespace COMP_POS {
+	enum {
+		CLERK,
+		SENIOR,
+		ASSIST,
+		MANAGER
+	};
 
-class Point {
+	void showStage(int pos) {
+		switch (pos) {
+		case 0:
+			cout << "사원"<<endl;
+			break;
+		case 1:
+			cout << "주임" << endl;
+			break;
+		case 2:
+			cout << "대리" << endl;
+			break;
+		case 3:
+			cout << "과장" << endl;
+			break;
+		}
+	}
+}
+
+class NameCard {
 private:
-	int xpos, ypos;
+	char* name;
+	char* company;
+	char* phone;
+	int stage;
 public:
-	Point(int x, int y) :xpos(x),ypos(y){
-	}
-	void ShowPointInfo() const {
-		cout << "[" << xpos << ", " << ypos << "]" << endl;
-	}
-};
+	NameCard(const char* name_, const char* company_, const char* phone_, const int stage_):stage(stage_) {
+		name = new char[strlen(name_) + 1];
+		company = new char[strlen(company_) + 1];
+		phone = new char[strlen(phone_) + 1];
 
-class Circle {
-private:
-	Point center;
-	int radius;
-public:
-	Circle(int x,int y, int radius_) :center(x, y) {
-		radius = radius_;
-	}
-	void ShowCircleInfo() const {
-		cout << "radius: " << radius << endl;
-		center.ShowPointInfo();
-	}
-};
-
-class Ring {
-private:
-	Circle inner;
-	Circle outer;
-public:
-	Ring(int in_x, int in_y, int in_ra, int out_x, int out_y, int out_ra) :inner(in_x, in_y, in_ra), outer(out_x, out_y, out_ra) {
+		strcpy(name, name_);
+		strcpy(company, company_);
+		strcpy(phone, phone_);
 	}
 
-	void ShowRingInfo() {
-		cout << "Inner Circle Info..." << endl;
-		inner.ShowCircleInfo();
-		cout << "Outer Circle Info..." << endl;
-		outer.ShowCircleInfo();
+	void ShowNameCardInfo() {
+		cout << "이름: " << name << endl;
+		cout << "회사: " << company << endl;
+		cout << "전화번호: " << phone << endl;
+		cout << "직급: ";
+		COMP_POS::showStage(stage);
+		cout << endl;
+	}
+
+	~NameCard() {
+		delete[] name;
+		delete[] company;
+		delete[] phone;
 	}
 };
 
 int main() {
-	Ring ring(1, 1, 4, 2, 2, 9);
-	ring.ShowRingInfo();
-	
+	NameCard manClerk("Lee", "ABCDEng", "010-1111-2222", COMP_POS::CLERK);
+	manClerk.ShowNameCardInfo();
+	NameCard manSenior("Hong", "OrangeEng", "010-3333-4444", COMP_POS::SENIOR);
+	manSenior.ShowNameCardInfo();
+	NameCard manAssist("Kim", "SoGoodComp", "010-5555-6666", COMP_POS::ASSIST);
+	manAssist.ShowNameCardInfo();
 	return 0;
 }
