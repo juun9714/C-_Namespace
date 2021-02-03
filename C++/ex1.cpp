@@ -30,19 +30,13 @@ namespace COMP_POS {
 
 class NameCard {
 private:
-	char* name;
-	char* company;
-	char* phone;
+	string name;
+	string company;
+	string phone;
 	int stage;
 public:
-	NameCard(const char* name_, const char* company_, const char* phone_, const int stage_):stage(stage_) {
-		name = new char[strlen(name_) + 1];
-		company = new char[strlen(company_) + 1];
-		phone = new char[strlen(phone_) + 1];
-
-		strcpy(name, name_);
-		strcpy(company, company_);
-		strcpy(phone, phone_);
+	NameCard(string name_, string company_, string phone_, int stage_):name(name_),company(company_),phone(phone_),stage(stage_) 
+	{
 	}
 
 	void ShowNameCardInfo() {
@@ -52,12 +46,6 @@ public:
 		cout << "СїБо: ";
 		COMP_POS::showStage(stage);
 		cout << endl;
-	}
-
-	~NameCard() {
-		delete[] name;
-		delete[] company;
-		delete[] phone;
 	}
 };
 
