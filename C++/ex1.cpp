@@ -6,9 +6,7 @@ class Point {
 private:
 	int xpos, ypos;
 public:
-	void Init(int x, int y) {
-		xpos = x;
-		ypos = y;
+	Point(int x, int y) :xpos(x),ypos(y){
 	}
 	void ShowPointInfo() const {
 		cout << "[" << xpos << ", " << ypos << "]" << endl;
@@ -20,8 +18,7 @@ private:
 	Point center;
 	int radius;
 public:
-	void Init(int x,int y, int radius_) {
-		center.Init(x, y);
+	Circle(int x,int y, int radius_) :center(x, y) {
 		radius = radius_;
 	}
 	void ShowCircleInfo() const {
@@ -35,9 +32,7 @@ private:
 	Circle inner;
 	Circle outer;
 public:
-	void Init(int in_x, int in_y, int in_ra, int out_x, int out_y, int out_ra) {
-		inner.Init(in_x, in_y, in_ra);
-		outer.Init(out_x, out_y, out_ra);
+	Ring(int in_x, int in_y, int in_ra, int out_x, int out_y, int out_ra) :inner(in_x, in_y, in_ra), outer(out_x, out_y, out_ra) {
 	}
 
 	void ShowRingInfo() {
@@ -49,8 +44,7 @@ public:
 };
 
 int main() {
-	Ring ring;
-	ring.Init(1, 1, 4, 2, 2, 9);
+	Ring ring(1, 1, 4, 2, 2, 9);
 	ring.ShowRingInfo();
 	
 	return 0;
